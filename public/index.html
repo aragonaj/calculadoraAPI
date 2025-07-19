@@ -188,7 +188,19 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ displayValue }) // envía: {"displayValue":"Lo que haya en pantalla"}
-            });
+            })
+                .then(response => response.json())  // parsea la respuesta como JSON
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('screen').textContent = data.result;
+                    } else {
+                        alert(data.message || "Error desconocido");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al hacer fetch:', error);
+                    alert("Hubo un error al comunicarse con el servidor.");
+                });
 
             // limpiar el display despues de enviarlo
             document.getElementById('screen').textContent = '';
